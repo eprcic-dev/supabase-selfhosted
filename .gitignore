@@ -1,3 +1,2 @@
-.env
 volumes/storage/*
 !volumes/storage/.gitkeep

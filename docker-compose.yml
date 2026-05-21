@@ -204,7 +204,7 @@ services:
       ENABLE_IMAGE_TRANSFORMATION: "true"
       IMGPROXY_URL: http://imgproxy:5001
     volumes:
-      - ./volumes/storage:/var/lib/storage:z
+      - ./volumes/storage:/var/lib/storage
 
   # ──────────────────────────────────────────────
   # Imgproxy — image transformations for Storage
@@ -259,7 +259,7 @@ services:
       SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
       VERIFY_JWT: ${FUNCTIONS_VERIFY_JWT}
     volumes:
-      - ./volumes/functions:/home/deno/functions:Z
+      - ./volumes/functions:/home/deno/functions
     command:
       - start
       - --main-service
@@ -275,7 +275,8 @@ services:
       test: ["CMD", "curl", "http://localhost:4000/health"]
       timeout: 5s
       interval: 5s
-      retries: 10
+      retries: 20
+      start_period: 60s
     depends_on:
       db:
         condition: service_healthy
@@ -328,7 +329,8 @@ services:
       test: pg_isready -U postgres -h localhost
       interval: 5s
       timeout: 5s
-      retries: 10
+      retries: 20
+      start_period: 60s
     ports:
       - ${POSTGRES_PORT}:5432/tcp
     environment:
@@ -342,12 +344,12 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXP: ${JWT_EXPIRY}
     volumes:
-      - ./volumes/db/realtime.sql:/docker-entrypoint-initdb.d/migrations/99-realtime.sql:Z
-      - ./volumes/db/webhooks.sql:/docker-entrypoint-initdb.d/migrations/99-webhooks.sql:Z
-      - ./volumes/db/roles.sql:/docker-entrypoint-initdb.d/migrations/99-roles.sql:Z
-      - ./volumes/db/jwt.sql:/docker-entrypoint-initdb.d/migrations/99-jwt.sql:Z
-      - ./volumes/db/logs.sql:/docker-entrypoint-initdb.d/migrations/99-logs.sql:Z
-      - db-data:/var/lib/postgresql/data:Z
+      - ./volumes/db/realtime.sql:/docker-entrypoint-initdb.d/migrations/99-realtime.sql:ro
+      - ./volumes/db/webhooks.sql:/docker-entrypoint-initdb.d/migrations/99-webhooks.sql:ro
+      - ./volumes/db/roles.sql:/docker-entrypoint-initdb.d/migrations/99-roles.sql:ro
+      - ./volumes/db/jwt.sql:/docker-entrypoint-initdb.d/migrations/99-jwt.sql:ro
+      - ./volumes/db/logs.sql:/docker-entrypoint-initdb.d/migrations/99-logs.sql:ro
+      - db-data:/var/lib/postgresql/data
     command:
       - postgres
       - -c
