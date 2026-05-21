@@ -5,7 +5,7 @@ services:
   # http://localhost:3000
   # ──────────────────────────────────────────────
   studio:
-    image: supabase/studio:2024.12.02-sha-8783e33
+    image: supabase/studio:2026.05.18-sha-f45a608
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/profile', (r) => { if (r.statusCode !== 200) throw new Error(r.statusCode) })"]
