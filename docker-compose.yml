@@ -344,12 +344,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXP: ${JWT_EXPIRY}
     volumes:
-      - ./volumes/db/realtime.sql:/docker-entrypoint-initdb.d/migrations/99-realtime.sql:ro
-      - ./volumes/db/webhooks.sql:/docker-entrypoint-initdb.d/migrations/99-webhooks.sql:ro
-      - ./volumes/db/roles.sql:/docker-entrypoint-initdb.d/migrations/99-roles.sql:ro
-      - ./volumes/db/jwt.sql:/docker-entrypoint-initdb.d/migrations/99-jwt.sql:ro
-      - ./volumes/db/logs.sql:/docker-entrypoint-initdb.d/migrations/99-logs.sql:ro
-      - db-data:/var/lib/postgresql/data
+      - db-data-v2:/var/lib/postgresql/data
     command:
       - postgres
       - -c
@@ -369,4 +364,4 @@ services:
       - 1100:1100/tcp   # POP3
 
 volumes:
-  db-data:
+  db-data-v2:
