@@ -14,7 +14,7 @@ services:
       retries: 3
     depends_on:
       analytics:
-        condition: service_healthy
+        condition: service_started
     environment:
       STUDIO_PG_META_URL: http://meta:8080
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -42,7 +42,7 @@ services:
     entrypoint: bash -c 'eval "echo \"$$(cat ~/temp.yml)\"" > ~/kong.yml && /docker-entrypoint.sh kong docker-start'
     depends_on:
       analytics:
-        condition: service_healthy
+        condition: service_started
     ports:
       - ${KONG_HTTP_PORT}:8000/tcp
       - ${KONG_HTTPS_PORT}:8443/tcp
@@ -75,7 +75,7 @@ services:
       db:
         condition: service_healthy
       analytics:
-        condition: service_healthy
+        condition: service_started
     environment:
       GOTRUE_API_HOST: 0.0.0.0
       GOTRUE_API_PORT: 9999
@@ -122,7 +122,7 @@ services:
       db:
         condition: service_healthy
       analytics:
-        condition: service_healthy
+        condition: service_started
     environment:
       PGRST_DB_URI: postgres://authenticator:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
       PGRST_DB_SCHEMAS: public,storage,graphql_public
@@ -148,7 +148,7 @@ services:
       db:
         condition: service_healthy
       analytics:
-        condition: service_healthy
+        condition: service_started
     environment:
       PORT: 4000
       DB_HOST: ${POSTGRES_HOST}
@@ -233,7 +233,7 @@ services:
       db:
         condition: service_healthy
       analytics:
-        condition: service_healthy
+        condition: service_started
     environment:
       PG_META_PORT: 8080
       PG_META_DB_HOST: ${POSTGRES_HOST}
@@ -250,7 +250,7 @@ services:
     restart: unless-stopped
     depends_on:
       analytics:
-        condition: service_healthy
+        condition: service_started
     environment:
       JWT_SECRET: ${JWT_SECRET}
       SUPABASE_URL: http://kong:8000
@@ -311,7 +311,7 @@ services:
       retries: 3
     depends_on:
       analytics:
-        condition: service_healthy
+        condition: service_started
     volumes:
       - ./volumes/logs/vector.yml:/etc/vector/vector.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
