@@ -1,4 +1,6 @@
--- Analytics schema for Logflare
+\set pguser `echo "$POSTGRES_USER"`
 
-CREATE SCHEMA IF NOT EXISTS _analytics;
-ALTER SCHEMA _analytics OWNER TO supabase_admin;
+\c _supabase
+create schema if not exists _analytics;
+alter schema _analytics owner to :pguser;
+\c postgres

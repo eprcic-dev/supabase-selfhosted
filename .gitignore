@@ -1,2 +1,8 @@
+# Persistent data (created at runtime)
 volumes/storage/*
 !volumes/storage/.gitkeep
+volumes/db/data/*
+!volumes/db/data/.gitkeep
+
+# macOS
+.DS_Store
